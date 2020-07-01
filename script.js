@@ -9,22 +9,22 @@ class Graphics1d{
     this.W = W;
     this.H = H;
     this.f = f;
-    this.values = new Float64Array;
   }
   evaluate(){
+    let values = new Map;
     for(let i = this.xmin; i <= this.xmax; i += 0.01){
-      this.values[i] = this.f(i);
-    return this.values;
+      values[i] = this.f(i);
     }
+    return values;
   }
   draw(){
     var graph = document.getElementById("canvas");
     var ctx = graph.getContext("2d");
     var drawed = new Graphics1d();
-    this.evaluate();
+    let values = this.evaluate();
     ctx.beginPath();
     for(let i = this.xmin; i <= this.xmax; i += 0.01)
-      ctx.lineTo(i, this.values[i]);
+      ctx.lineTo(i , values[i]);
     ctx.closePath();
     ctx.stroke();
   }
@@ -34,5 +34,4 @@ class Graphics1d{
   }
 };
 var ng = new Graphics1d();
-var d = ng.evaluate();
-d.forEach(element => console.log(element));
+ng.draw();
