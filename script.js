@@ -30,15 +30,26 @@ class Graphics1d{
     ctx.lineTo(ng.W / 2, ng.H);
     ctx.closePath();
     ctx.stroke();
-    ctx.strokeWidth = 2;
+    ctx.lineWidth = 0.2;
+    
+    for(let i = 0; i <= ng.W; i += ng.W / (Math.abs(ng.xmin) + Math.abs(ng.xmax)))
+      for(let j = 0; j <= ng.H; j += ng.H / (Math.abs(ng.ymin) + Math.abs(ng.ymax))){
+      ctx.beginPath();
+      ctx.moveTo(i, j);
+      ctx.lineTo(i + ng.W / (Math.abs(ng.xmin) + Math.abs(ng.xmax)), j);
+      ctx.lineTo(i + ng.W / (Math.abs(ng.xmin) + Math.abs(ng.xmax)), j + ng.H / (Math.abs(ng.ymin) + Math.abs(ng.ymax)));
+      ctx.lineTo(i, j + ng.H / (Math.abs(ng.ymin) + Math.abs(ng.ymax)));
+      ctx.closePath();
+      ctx.stroke();
+      }
     ctx.beginPath();
-    for(int i = 0; i <= )
-    ctx.beginPath();
+    ctx.lineWidth = 1;
+    ctx.strokeStyle = "black";
     ctx.moveTo(ng.xmin, values[ng.xmin]);
     for(let i = ng.xmin; i <= ng.xmax; i += 0.01)
       ctx.lineTo(ng.W / 2 + i * ng.W / 2 / ng.xmax  , (ng.H - values[i] * ng.H / 2 / ng.ymax));
     ctx.closePath();
-    
+    ctx.stroke();
   }
   
   autodraw(){
