@@ -62,34 +62,34 @@ class Graphics1d {
     ctx.stroke();
     ctx.lineWidth = 0.2;
     ctx.strokeStyle = axis;
-    for (let i = zerox; i < this.W; i += sqx * stepx){
+    for (let i = zerox; i < this.W; i += sqx * stepx) {
       ctx.beginPath();
       ctx.moveTo(i, 0);
       ctx.lineTo(i, this.H);
       ctx.closePath();
       ctx.stroke();
     }
-      for (let j = zeroy; j < this.H; j += sqy * stepy) {
-        ctx.beginPath();
-        ctx.lineTo(0, j);
-        ctx.lineTo(this.W, j);
-        ctx.closePath();
-        ctx.stroke();
-      }
-    for (let i = zerox; i > 0; i -= sqx * stepx){
+    for (let j = zeroy; j < this.H; j += sqy * stepy) {
+      ctx.beginPath();
+      ctx.lineTo(0, j);
+      ctx.lineTo(this.W, j);
+      ctx.closePath();
+      ctx.stroke();
+    }
+    for (let i = zerox; i > 0; i -= sqx * stepx) {
       ctx.beginPath();
       ctx.moveTo(i, 0);
       ctx.lineTo(i, this.H);
       ctx.closePath();
       ctx.stroke();
     }
-      for (let j = zeroy; j >0; j -= sqy * stepy) {
-        ctx.beginPath();
-        ctx.lineTo(0, j);
-        ctx.lineTo(this.W, j);
-        ctx.closePath();
-        ctx.stroke();
-      }
+    for (let j = zeroy; j > 0; j -= sqy * stepy) {
+      ctx.beginPath();
+      ctx.lineTo(0, j);
+      ctx.lineTo(this.W, j);
+      ctx.closePath();
+      ctx.stroke();
+    }
     ctx.beginPath();
     ctx.lineWidth = 1;
     ctx.strokeStyle = dots;
@@ -99,22 +99,33 @@ class Graphics1d {
       i <= this.xmax;
       i += (-this.xmin + this.xmax) / this.W
     ) {
-        if (i!=this.xmin)
-            {
-                let cur = this.values[i];
-                let prev = this.values[i - (-this.xmin + this.xmax) / this.W] ;
-                if(cur*prev < 0 && (Math.abs(cur - prev) > this.ymax - this.ymin)) {
-                    ctx.stroke();
-                    ctx.closePath();
-                    ctx.beginPath();
-                    ctx.fillStyle = gaps;
-                    ctx.arc(zerox + i  * stepx, zeroy - stepy * this.ymax, stepx / 10, 0, 180);
-                    ctx.arc(zerox + i  * stepx, zeroy - stepy * this.ymin, stepx / 10, 0, 180);
-                    ctx.fill();
-                    ctx.closePath();
-                    ctx.beginPath();
-                }else ctx.lineTo(zerox + i * stepx, zeroy - this.values[i] * stepy);
-            }else {
+      if (i != this.xmin) {
+        let cur = this.values[i];
+        let prev = this.values[i - (-this.xmin + this.xmax) / this.W];
+        if (cur * prev < 0 && Math.abs(cur - prev) > this.ymax - this.ymin) {
+          ctx.stroke();
+          ctx.closePath();
+          ctx.beginPath();
+          ctx.fillStyle = gaps;
+          ctx.arc(
+            zerox + i * stepx,
+            zeroy - stepy * this.ymax,
+            stepx / 10,
+            0,
+            180
+          );
+          ctx.arc(
+            zerox + i * stepx,
+            zeroy - stepy * this.ymin,
+            stepx / 10,
+            0,
+            180
+          );
+          ctx.fill();
+          ctx.closePath();
+          ctx.beginPath();
+        } else ctx.lineTo(zerox + i * stepx, zeroy - this.values[i] * stepy);
+      } else {
         ctx.lineTo(zerox + i * stepx, zeroy - this.values[i] * stepy);
       }
     }
@@ -173,7 +184,8 @@ function replaceSpecialSequence(str) {
   str = str.split("e").join("Math.E");
   return str;
 }
-var sqx = 1, sqy = 1;
+var sqx = 1,
+  sqy = 1;
 var ng = new Graphics1d();
 ng.draw();
 function yes() {
