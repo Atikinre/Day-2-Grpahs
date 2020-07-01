@@ -19,12 +19,20 @@ class Graphics1d{
   }
   draw(){
     var graph = document.getElementById("canvas");
-    var ctx = myportrait.getContext("2d");
-    var drawed = new Graphics1d
+    var ctx = graph.getContext("2d");
+    var drawed = new Graphics1d();
+    this.evaluate();
+    ctx.beginPath();
+    for(let i = this.xmin; i <= this.xmax; i += 0.01)
+      ctx.lineTo(i, this.values[i]);
+    ctx.closePath();
+    ctx.stroke();
   }
   
   autodraw(){
     
   }
 };
-  
+var ng = new Graphics1d();
+var d = ng.evaluate();
+d.forEach(element => console.log(element));
