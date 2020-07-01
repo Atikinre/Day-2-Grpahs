@@ -1,6 +1,6 @@
 class Graphics1d {
   constructor(
-    xmin = -10.0,
+    xmin = 0,
     xmax = 10.0,
     ymin = -10.0,
     ymax = 10.0,
@@ -21,10 +21,9 @@ class Graphics1d {
   }
   evaluate() {
     this.values = new Map();
-    for (let i = this.xmin; i <= this.xmax + 0.1; i += 0.01) {
+    for (let i = this.xmin; i <= this.xmax; i += 0.01) {
       this.values[i] = this.f(i);
     }
-    console.log(this.f(this.xmax));
     this.ev = 1;
     return this.values;
   }
@@ -39,11 +38,14 @@ class Graphics1d {
     var ctx = graph.getContext("2d");
     var drawed = new Graphics1d();
     if (this.ev == 0) this.evaluate();
+    let zerox = Math.abs(this.xmin) * this.W / (Math.abs(this.xmin) + Math.abs(this.xmax)) ,
+    zeroy = Math.abs(this.ymin) * this.H / (Math.abs(this.ymin) + Math.abs(this.ymax));
+    console.log(zerox, zeroy);
     ctx.fillStyle = bg;
     ctx.fillRect(0, 0, ng.W, ng.H);
     ctx.beginPath();
     ctx.strokeStyle = axis;
-    ctx.moveTo(0, ng.H / 2);
+    ctx.moveTo(0, zeroy);
     ctx.lineTo(ng.W, ng.H / 2);
     ctx.moveTo(ng.W / 2, 0);
     ctx.lineTo(ng.W / 2, ng.H);
@@ -95,13 +97,12 @@ class Graphics1d {
     gaps = "magenta",
     bg = "gray"
   ) {
-    if (this.ev == 0) this.evaluate();
-    console.log(this.ymin, this.ymax);
-    this.ymin = this.values[this.xmin];
-    this.ymax = this.values[this.xmax];
-    console.log(this.ymin, this.ymax);
+    
+    this.ymin = this.f(this.xmin);
+    this.ymax = this.f(this.xmax);
+    
     this.draw(dots, axis, zeros, gaps, bg);
   }
 }
 var ng = new Graphics1d();
-ng.autodraw();
+ng.draw();
