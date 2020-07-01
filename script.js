@@ -83,13 +83,25 @@ class Graphics1d {
     ctx.moveTo(
       zerox + (ng.xmin * stepx),
       zeroy - (this.f(this.xmin) * stepy));
-    console.log(zeroy - (this.f(this.xmin) * zeroy), );
+    this.values[0] = NaN;
     for (let i = ng.xmin; i <= ng.xmax; i += 0.01){
+       
+      if(this.values[i] == NaN){
+        ctx.stroke();
+        ctx.closePath();
+        ctx.beginPath();
+        ctx.fillStyle = zeros;
+        ctx.arc(i - 0.1, this.values[i - 0.1], 50, 0, 360, clockwise);
+        ctx.fill();
+        ctx.closePath();
+        ctx.beginPath();
+      }
+      else{
       ctx.lineTo(
         zerox + i * stepx,
         zeroy - this.values[i] * stepy
       );
-      
+      }
     }
     ctx.stroke();
     ctx.closePath();
