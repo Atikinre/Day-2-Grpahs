@@ -9,12 +9,18 @@ class Graphics1d{
     this.W = W;
     this.H = H;
     this.f = f;
+    this.values = new Float64Array;
   }
   evaluate(){
-    
+    for(let i = this.xmin; i <= this.xmax; i += 0.01){
+      this.values[i] = this.f(i);
+    return this.values;
+    }
   }
   draw(){
-    
+    var graph = document.getElementById("canvas");
+    var ctx = myportrait.getContext("2d");
+    var drawed = new Graphics1d
   }
   
   autodraw(){
