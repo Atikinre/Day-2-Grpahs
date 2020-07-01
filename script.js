@@ -39,8 +39,8 @@ class Graphics1d {
     var drawed = new Graphics1d();
     if (this.ev == 0) this.evaluate();
     let 
-    stepx = this.W / (Math.abs(this.xmin) + Math.abs(this.xmax)),
-    stepy = this.H / (Math.abs(this.ymin) + Math.abs(this.ymax)),
+    stepx = this.W / (-this.xmin + this.xmax),
+    stepy = this.H / (-this.ymin + this.ymax),
     zerox = Math.abs(this.xmin) * stepx,
     zeroy = Math.abs(this.ymin) * stepy;
     ctx.fillStyle = bg;
@@ -70,8 +70,8 @@ class Graphics1d {
         ctx.moveTo(i, j);
         ctx.lineTo(i + ng.W / (Math.abs(ng.xmin) + Math.abs(ng.xmax)), j);
         ctx.lineTo(
-          i + ng.W / (Math.abs(ng.xmin) + Math.abs(ng.xmax)),
-          j + ng.H / (Math.abs(ng.ymin) + Math.abs(ng.ymax))
+          i + ng.W / stepx,
+          j + ng.H / stepy
         );
         ctx.lineTo(i, j + ng.H / (Math.abs(ng.ymin) + Math.abs(ng.ymax)));
         ctx.closePath();
@@ -81,17 +81,15 @@ class Graphics1d {
     ctx.lineWidth = 1;
     ctx.strokeStyle = dots;
     ctx.moveTo(
-      zerox + (ng.xmin * stepx),
+      zerox + (this.xmin * stepx),
       zeroy - (this.f(this.xmin) * stepy));
-    this.values[0] = NaN;
-    for (let i = ng.xmin; i <= ng.xmax; i += 0.01){
-       
-      if(this.values[i] == NaN){
+    for (let i = this.xmin; i <= this.xmax; i += 0.01){
+      if((i - 0.01) * (i) ){
         ctx.stroke();
         ctx.closePath();
         ctx.beginPath();
         ctx.fillStyle = zeros;
-        ctx.arc(i - 0.1, this.values[i - 0.1], 50, 0, 360, clockwise);
+        ctx.arc(zerox + i*stepx, zeroy + stepy * this.values[i - 0.1], 50, 0, 180);
         ctx.fill();
         ctx.closePath();
         ctx.beginPath();
