@@ -1,4 +1,4 @@
-class Graphics1d {
+class Graphics2d {
   constructor(
     xmin = -10.0,
     xmax = 10.0,
@@ -6,8 +6,8 @@ class Graphics1d {
     ymax = 10.0,
     W = 512,
     H = 512,
-    f = function(x) {
-      return x * x - 9;
+    f = function(x, y) {
+      return x*x+y*y-81;
     }
   ) {
     this.xmin = xmin;
@@ -21,16 +21,11 @@ class Graphics1d {
   }
   evaluate() {
     this.values = new Map();
-
-    for (
-      let i = this.xmin;
-      i <= this.xmax;
-      i += (-this.xmin + this.xmax) / this.W
-    ) {
-      this.values[i] = this.f(i);
+    for (let i = this.xmin;i <= this.xmax;i += (-this.xmin + this.xmax) / this.W) 
+      for(let j = this.ymin; j <= this.ymax; j += (-this.ymin + this.ymax) / this.H){
+        this.values[[i, j]] = this.f(i, j);
     }
     this.ev = 1;
-    return this.values;
   }
   draw(
     dots = "red",
@@ -39,87 +34,61 @@ class Graphics1d {
     gaps = "magenta",
     bg = "gray"
   ) {
-    var graph = document.getElementById("canvas");
+    var graph = document.getElementById("canvas2");
     graph.width = this.W;
     graph.height = this.H;
     var ctx = graph.getContext("2d");
-    var drawed = new Graphics1d();
     if (this.ev == 0) this.evaluate();
     let stepx = this.W / (-this.xmin + this.xmax),
       stepy = this.H / (-this.ymin + this.ymax),
       zerox = Math.abs(this.xmin) * stepx,
       zeroy = Math.abs(this.ymin) * stepy;
     ctx.fillStyle = bg;
-    ctx.fillRect(0, 0, ng.W, ng.H);
+    ctx.fillRect(0, 0, nd.W, nd.H);
     ctx.beginPath();
     ctx.lineWidth = 2;
     ctx.strokeStyle = axis;
     ctx.moveTo(0, zeroy);
-    ctx.lineTo(ng.W, zeroy);
+    ctx.lineTo(nd.W, zeroy);
     ctx.moveTo(zerox, 0);
-    ctx.lineTo(zerox, ng.H);
+    ctx.lineTo(zerox, nd.H);
     ctx.closePath();
     ctx.stroke();
     ctx.lineWidth = 0.2;
     ctx.strokeStyle = axis;
-    for (let i = zerox; i < this.W; i += sqx * stepx){
+    for (let i = 0; i < this.W; i += sqx2 * stepx){
       ctx.beginPath();
       ctx.moveTo(i, 0);
       ctx.lineTo(i, this.H);
       ctx.closePath();
       ctx.stroke();
     }
-      for (let j = zeroy; j < this.H; j += sqy * stepy) {
+      for (let j = 0; j < this.H; j += sqy2 * stepy) {
         ctx.beginPath();
         ctx.lineTo(0, j);
         ctx.lineTo(this.W, j);
         ctx.closePath();
         ctx.stroke();
       }
-    for (let i = zerox; i > 0; i -= sqx * stepx){
-      ctx.beginPath();
-      ctx.moveTo(i, 0);
-      ctx.lineTo(i, this.H);
-      ctx.closePath();
-      ctx.stroke();
-    }
-      for (let j = zeroy; j >0; j -= sqy * stepy) {
-        ctx.beginPath();
-        ctx.lineTo(0, j);
-        ctx.lineTo(this.W, j);
-        ctx.closePath();
-        ctx.stroke();
-      }
-    ctx.beginPath();
+    
     ctx.lineWidth = 1;
     ctx.strokeStyle = dots;
-    ctx.moveTo(zerox + this.xmin * stepx, zeroy - this.f(this.xmin) * stepy);
-    for (
-      let i = this.xmin;
-      i <= this.xmax;
-      i += (-this.xmin + this.xmax) / this.W
-    ) {
-        if (i!=this.xmin)
-            {
-                let cur = this.values[i];
-                let prev = this.values[i - (-this.xmin + this.xmax) / this.W] ;
-                if(cur*prev < 0 && (Math.abs(cur - prev) > this.ymax - this.ymin)) {
-                    ctx.stroke();
-                    ctx.closePath();
-                    ctx.beginPath();
-                    ctx.fillStyle = gaps;
-                    ctx.arc(zerox + i  * stepx, zeroy - stepy * this.ymax, stepx / 10, 0, 180);
-                    ctx.arc(zerox + i  * stepx, zeroy - stepy * this.ymin, stepx / 10, 0, 180);
-                    ctx.fill();
-                    ctx.closePath();
-                    ctx.beginPath();
-                }else ctx.lineTo(zerox + i * stepx, zeroy - this.values[i] * stepy);
-            }else {
-        ctx.lineTo(zerox + i * stepx, zeroy - this.values[i] * stepy);
+    for (let i = this.xmin;i <= this.xmax;i += (-this.xmin + this.xmax) / this.W) 
+      for(let j = this.ymin; j <= this.ymax; j += (-this.ymin + this.ymax) / this.H){
+        ctx.beginPath();
+        if(this.values[[i, j]] < 0){
+          ctx.fillStyle = "rgba(0, 0, 255, 0.2)";
+        }
+        else if(this.values[[i, j]] > 0){
+          ctx.fillStyle = "rgba(255, 0, 0, 0.2)";
+        }
+        else if(this.values[[i, j]] == 0)
+          ctx.fillStyle = "rgba(255, 255, 255, 0.2)";
+        ctx.arc(zerox + i * stepx, zeroy - j * stepy, 1, 0, 360);
+        ctx.fill();
+        ctx.closePath()
       }
-    }
-    ctx.stroke();
-    ctx.closePath();
+    ;
     ctx.font = "25px Consolas";
     ctx.textBaseline = "ideographic";
     ctx.fillStyle = "black";
@@ -173,23 +142,23 @@ function replaceSpecialSequence(str) {
   str = str.split("e").join("Math.E");
   return str;
 }
-var sqx = 1, sqy = 1;
-var ng = new Graphics1d();
-ng.draw();
-function yes() {
-  var xmin = parseFloat(document.getElementById("xmin").value),
-    xmax = parseFloat(document.getElementById("xmax").value),
-    ymin = parseFloat(document.getElementById("ymin").value),
-    ymax = parseFloat(document.getElementById("ymax").value),
-    W = parseFloat(document.getElementById("W").value),
-    H = parseFloat(document.getElementById("H").value),
-    f = document.getElementById("f").value;
-  sqx = parseFloat(document.getElementById("sqx").value);
-  sqy = parseFloat(document.getElementById("sqy").value);
-  f = replaceSpecialSequence(f);
-  var m = function(x) {
-    return eval(f);
+var sqx2 = 1, sqy2 = 1;
+var nd = new Graphics2d();
+nd.draw();
+function yes2() {
+  var xmin2 = parseFloat(document.getElementById("xmin2").value),
+    xmax2 = parseFloat(document.getElementById("xmax2").value),
+    ymin2 = parseFloat(document.getElementById("ymin2").value),
+    ymax2 = parseFloat(document.getElementById("ymax2").value),
+    W2 = parseFloat(document.getElementById("W2").value),
+    H2 = parseFloat(document.getElementById("H2").value),
+    f2 = document.getElementById("f2").value;
+  sqx2 = parseFloat(document.getElementById("sqx2").value);
+  sqy2 = parseFloat(document.getElementById("sqy2").value);
+  f2 = replaceSpecialSequence(f2);
+  var m2 = function(x, y) {
+    return eval(f2);
   };
-  ng = new Graphics1d(xmin, xmax, ymin, ymax, W, H, m);
-  ng.draw();
+  nd = new Graphics2d(xmin2, xmax2, ymin2, ymax2, W2, H2, m2);
+  nd.draw();
 }

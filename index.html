@@ -12,16 +12,75 @@
     
     <!-- import the webpage's javascript file -->
     <script src="/script.js" defer></script>
+    <script src="/2d.js" defer></script>
   </head>  
   <body>
     <h1>
       Репнин Никита День 2
     </h1>
-    <canvas id = "canvas" width = "480" height = "400"></canvas>
-
-    <!-- include the Glitch button to show what the webpage is about and
-          to make it easier for folks to view source and remix -->
-    <div class="glitchButton" style="position:fixed;top:20px;right:20px;"></div>
-    <script src="https://button.glitch.me/button.js" defer></script>
+    <details>
+    <summary>Построение f(x)</summary>
+    <canvas id = "canvas" width = "1000" height = "1000"></canvas>
+   <div class = "pol">
+    <p>
+    f(x) = 
+    <input type="text" id = "f" size="50" value="x*x - 9" height = "20"/>
+    </p>
+    <p>
+    Интервал x: <input type="text" id = "xmin" size="50" value="-10" height = "20"/>
+   <input type="text" id = "xmax" size="50" value="10" height = "20"/>
+    </p>
+    <p>
+     Интервал y: <input type="text" id = "ymin" size="50" value="-10" height = "20"/>
+    <input type="text" id = "ymax" size="50" value="10" height = "20"/>
+    </p>
+    <p>
+      Ширина холста:
+      <input type="text" id = "W" size="50" value="512" height = "20"/>
+    </p>
+    <p>
+      Высота холста:
+    <input type="text" id = "H" size="50" value="512" height = "20"/>
+    </p>
+     <p>
+      Размеры клетки:
+    X<input type="text" id = "sqx" size="50" value="1" height = "20"/>
+    Y<input type="text" id = "sqy" size="50" value="1" height = "20"/>
+    </p>
+     <input type="button" class = "button" onclick="yes();" value="Построить">
+    </div> 
+    </details>
+     <details>
+    <summary>Построение f(x, y)</summary>
+    <canvas id = "canvas2" width = "1000" height = "1000"></canvas>
+   <div class = "pol">
+    <p>
+    f(x, y) = 
+    <input type="text" id = "f2" size="50" value="x*x+y*y-81" height = "20"/>
+    </p>
+    <p>
+    Интервал x: <input type="text" id = "xmin2" size="50" value="-10" height = "20"/>
+   <input type="text" id = "xmax2" size="50" value="10" height = "20"/>
+    </p>
+    <p>
+     Интервал y: <input type="text" id = "ymin2" size="50" value="-10" height = "20"/>
+    <input type="text" id = "ymax2" size="50" value="10" height = "20"/>
+    </p>
+    <p>
+      Ширина холста:
+      <input type="text" id = "W2" size="50" value="512" height = "20"/>
+    </p>
+    <p>
+      Высота холста:
+    <input type="text" id = "H2" size="50" value="512" height = "20"/>
+    </p>
+     <p>
+      Размеры клетки:
+    X<input type="text" id = "sqx2" size="50" value="1" height = "20"/>
+    Y<input type="text" id = "sqy2" size="50" value="1" height = "20"/>
+    </p>
+     <input type="button" class = "button" onclick="yes2();" value="Построить">
+    </div> 
+    </details>
   </body>
 </html>
