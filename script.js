@@ -7,7 +7,7 @@ class Graphics1d {
     W = 120 * 4,
     H = 100 * 4,
     f = function(x) {
-      return x * x - 9;
+      return 1/x;
     }
   ) {
     this.xmin = xmin;
@@ -59,21 +59,21 @@ class Graphics1d {
     for (
       let i = 0;
       i <= ng.W;
-      i += ng.W / (Math.abs(ng.xmin) + Math.abs(ng.xmax))
+      i += stepx
     )
       for (
         let j = 0;
         j <= ng.H;
-        j += ng.H / (Math.abs(ng.ymin) + Math.abs(ng.ymax))
+        j += stepy
       ) {
         ctx.beginPath();
         ctx.moveTo(i, j);
-        ctx.lineTo(i + ng.W / (Math.abs(ng.xmin) + Math.abs(ng.xmax)), j);
+        ctx.lineTo(i + stepx, j);
         ctx.lineTo(
-          i + ng.W / stepx,
-          j + ng.H / stepy
+          i + stepx,
+          j + stepy
         );
-        ctx.lineTo(i, j + ng.H / (Math.abs(ng.ymin) + Math.abs(ng.ymax)));
+        ctx.lineTo(i, j + stepy);
         ctx.closePath();
         ctx.stroke();
       }
@@ -84,17 +84,18 @@ class Graphics1d {
       zerox + (this.xmin * stepx),
       zeroy - (this.f(this.xmin) * stepy));
     for (let i = this.xmin; i <= this.xmax; i += 0.01){
-      if((i - 0.01) * (i) ){
+      if(this.values[i] > 0 && this.values[i] < 10e-10){
         ctx.stroke();
         ctx.closePath();
         ctx.beginPath();
         ctx.fillStyle = zeros;
-        ctx.arc(zerox + i*stepx, zeroy + stepy * this.values[i - 0.1], 50, 0, 180);
+        ctx.arc(zerox + i*stepx, zeroy - stepy * this.values[i - 0.1], 3, 0, 180);
         ctx.fill();
         ctx.closePath();
         ctx.beginPath();
       }
       else{
+      console.log(i, this.values[i]);
       ctx.lineTo(
         zerox + i * stepx,
         zeroy - this.values[i] * stepy
