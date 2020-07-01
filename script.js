@@ -1,8 +1,8 @@
 class Graphics1d {
   constructor(
-    xmin = -2,
+    xmin = -10.0,
     xmax = 10.0,
-    ymin = -2,
+    ymin = -10.0,
     ymax = 10.0,
     W = 120 * 4,
     H = 100 * 4,
@@ -38,8 +38,11 @@ class Graphics1d {
     var ctx = graph.getContext("2d");
     var drawed = new Graphics1d();
     if (this.ev == 0) this.evaluate();
-    let zerox = Math.abs(this.xmin) * this.W / (Math.abs(this.xmin) + Math.abs(this.xmax)) ,
-    zeroy = Math.abs(this.ymin) * this.H / (Math.abs(this.ymin) + Math.abs(this.ymax));
+    let 
+    stepx = this.W / (Math.abs(this.xmin) + Math.abs(this.xmax)),
+    stepy = this.H / (Math.abs(this.ymin) + Math.abs(this.ymax)),
+    zerox = Math.abs(this.xmin) * stepx,
+    zeroy = Math.abs(this.ymin) * stepy;
     ctx.fillStyle = bg;
     ctx.fillRect(0, 0, ng.W, ng.H);
     ctx.beginPath();
@@ -78,17 +81,18 @@ class Graphics1d {
     ctx.lineWidth = 1;
     ctx.strokeStyle = dots;
     ctx.moveTo(
-      zerox + (ng.xmin * zerox) / ng.xmax,
-      zeroy - (this.f(this.xmin) * zeroy / 2 / this.ymax));
+      zerox + (ng.xmin * stepx),
+      zeroy - (this.f(this.xmin) * stepy));
+    console.log(zeroy - (this.f(this.xmin) * zeroy), );
     for (let i = ng.xmin; i <= ng.xmax; i += 0.01){
       ctx.lineTo(
-        zerox + (i * ng.W) / 2 / ng.xmax,
-        zeroy - (this.values[i] * ng.H) / 2 / ng.ymax
+        zerox + i * stepx,
+        zeroy - this.values[i] * stepy
       );
-      ctx.stroke();
-    ctx.closePath();
-    
+      
     }
+    ctx.stroke();
+    ctx.closePath();
   }
 
   autodraw(
@@ -106,4 +110,4 @@ class Graphics1d {
   }
 }
 var ng = new Graphics1d();
-ng.draw();
+ng.autodraw();
