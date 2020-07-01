@@ -17,11 +17,12 @@ class Graphics1d{
     }
     return values;
   }
-  draw(){
+  draw(dots = "red", axis = "green", zeros = "indigo", gaps = "magenta", bg = "gray"){
     var graph = document.getElementById("canvas");
     var ctx = graph.getContext("2d");
     var drawed = new Graphics1d();
     let values = this.evaluate();
+    ctx.fillRect(0, 0, ng.W, ng.H)
     ctx.beginPath();
     ctx.strokeStyle = "green";
     ctx.moveTo(0, ng.H / 2);
@@ -31,7 +32,7 @@ class Graphics1d{
     ctx.closePath();
     ctx.stroke();
     ctx.lineWidth = 0.2;
-    
+    ctx.strokeStyle = "green";
     for(let i = 0; i <= ng.W; i += ng.W / (Math.abs(ng.xmin) + Math.abs(ng.xmax)))
       for(let j = 0; j <= ng.H; j += ng.H / (Math.abs(ng.ymin) + Math.abs(ng.ymax))){
       ctx.beginPath();
