@@ -22,9 +22,10 @@ class Graphics1d{
     var ctx = graph.getContext("2d");
     var drawed = new Graphics1d();
     let values = this.evaluate();
+    ctx.fillStyle = bg; 
     ctx.fillRect(0, 0, ng.W, ng.H)
     ctx.beginPath();
-    ctx.strokeStyle = "green";
+    ctx.strokeStyle = axis;
     ctx.moveTo(0, ng.H / 2);
     ctx.lineTo(ng.W, ng.H / 2);
     ctx.moveTo(ng.W / 2, 0);
@@ -32,7 +33,7 @@ class Graphics1d{
     ctx.closePath();
     ctx.stroke();
     ctx.lineWidth = 0.2;
-    ctx.strokeStyle = "green";
+    ctx.strokeStyle = axis;
     for(let i = 0; i <= ng.W; i += ng.W / (Math.abs(ng.xmin) + Math.abs(ng.xmax)))
       for(let j = 0; j <= ng.H; j += ng.H / (Math.abs(ng.ymin) + Math.abs(ng.ymax))){
       ctx.beginPath();
@@ -45,10 +46,10 @@ class Graphics1d{
       }
     ctx.beginPath();
     ctx.lineWidth = 1;
-    ctx.strokeStyle = "black";
-    ctx.moveTo(ng.xmin, values[ng.xmin]);
+    ctx.strokeStyle = dots;
+    ctx.moveTo(ng.W / 2 + ng.xmin * ng.W / 2 / ng.xmax, ng.H/2 - values[ng.xmin] * ng.H / 2 / ng.ymax);
     for(let i = ng.xmin; i <= ng.xmax; i += 0.01)
-      ctx.lineTo(ng.W / 2 + i * ng.W / 2 / ng.xmax  , (ng.H - values[i] * ng.H / 2 / ng.ymax));
+      ctx.lineTo(ng.W / 2 + i * ng.W / 2 / ng.xmax  , (ng.H/2 - values[i] * ng.H / 2 / ng.ymax));
     ctx.closePath();
     ctx.stroke();
   }
