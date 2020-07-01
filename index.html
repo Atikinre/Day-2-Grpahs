@@ -17,8 +17,30 @@
     <h1>
       Репнин Никита День 2
     </h1>
-    <canvas id = "canvas" width = "480" height = "400"></canvas>
-
+    <canvas id = "canvas" width = "1000" height = "1000"></canvas>
+   <div class = "pol">
+    <p>
+    Функция:
+    <input type="text" id = "f" size="50" value="x*x - 9" height = "20"/>
+    </p>
+    <p>
+    Интервал x<input type="text" id = "xmin" size="50" value="-10" height = "20"/>
+   <input type="text" id = "xmax" size="50" value="10" height = "20"/>
+    </p>
+    <p>
+     Интервал y<input type="text" id = "ymin" size="50" value="-10" height = "20"/>
+    <input type="text" id = "ymax" size="50" value="10" height = "20"/>
+    </p>
+    <p>
+      Ширина
+      <input type="text" id = "W" size="50" value="1000" height = "20"/>
+    </p>
+    <p>
+      Высота
+    <input type="text" id = "H" size="50" value="1000" height = "20"/>
+    </p>
+     <input type="button" class = "button" onclick="yes();" value="Построить">
+    </div> 
     <!-- include the Glitch button to show what the webpage is about and
           to make it easier for folks to view source and remix -->
     <div class="glitchButton" style="position:fixed;top:20px;right:20px;"></div>
