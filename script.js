@@ -24,7 +24,7 @@ class Graphics1d{
     let values = this.evaluate();
     ctx.beginPath();
     for(let i = this.xmin; i <= this.xmax; i += 0.01)
-      ctx.lineTo(i , values[i]);
+      ctx.lineTo(60 + i * ng.W / 2 / ng.xmax  , (50 + values[i] * ng.H / 2 / ng.ymax));
     ctx.closePath();
     ctx.stroke();
   }
