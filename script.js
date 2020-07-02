@@ -21,6 +21,7 @@ class Graphics1d {
   }
   evaluate() {
     let count = 0;
+    var mxe = [this.f(this.xmin), this.f(this.xmax)];
     this.fvalues = new Float64Array(this.H * this.W);
     this.dots = new Array(this.H * this.W);
     for (
@@ -30,8 +31,11 @@ class Graphics1d {
     ) {
       this.dots[count] = i;
       this.fvalues[count++] = this.f(i);
+      mxe[1] = Math.max(this.fvalues[count - 1], mxe[1]);
+      mxe[0] = Math.min(this.fvalues[count - 1], mxe[0]);
     }
     this.ev = 1;
+    return mxe;
   }
   draw(
     dots = "red",
@@ -48,8 +52,8 @@ class Graphics1d {
     if (this.ev == 0) this.evaluate();
     let stepx = this.W / (-this.xmin + this.xmax),
       stepy = this.H / (-this.ymin + this.ymax),
-      zerox = Math.abs(this.xmin) * stepx,
-      zeroy = Math.abs(this.ymin) * stepy;
+      zerox = -this.xmin * stepx,
+      zeroy = Math.abs(this.ymax) * stepy;
     ctx.fillStyle = bg;
     ctx.fillRect(0, 0, ng.W, ng.H);
     ctx.beginPath();
@@ -169,9 +173,12 @@ class Graphics1d {
     gaps = "magenta",
     bg = "gray"
   ) {
-    this.ymin = this.f(this.xmin);
-    this.ymax = this.f(this.xmax);
+    console.log(this.ymin, this.ymax);
+    if (this.ev == 0) var mx = this.evaluate();
+    this.ymin = Math.min(mx[0], mx[1]);
+    this.ymax = Math.max(mx[0], mx[1]);
     this.draw(dots, axis, zeros, gaps, bg);
+    console.log(this.ymin, this.ymax);
   }
 }
 function replaceSpecialSequence(str) {
@@ -205,7 +212,7 @@ function replaceSpecialSequence(str) {
 var sqx = 1,
   sqy = 1;
 var ng = new Graphics1d();
-ng.draw();
+ng.autodraw();
 function yes() {
   var xmin = parseFloat(document.getElementById("xmin").value),
     xmax = parseFloat(document.getElementById("xmax").value),
