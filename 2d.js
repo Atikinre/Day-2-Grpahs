@@ -20,7 +20,9 @@ class Graphics2d {
     this.ev = 0;
   }
   evaluate() {
-    this.values = new Map();
+    this.fvalues = new Float64Array(this.H * this.W);
+    this.dots = new Array (this.H * this.W);
+    let count = 0;
     for (
       let i = this.xmin;
       i <= this.xmax;
@@ -31,7 +33,8 @@ class Graphics2d {
         j <= this.ymax;
         j += (-this.ymin + this.ymax) / this.H
       ) {
-        this.values[[i, j]] = this.f(i, j);
+        this.dots[count] = [i, j];
+        this.fvalues[count++] = this.f(i, j);
       }
     this.ev = 1;
   }
@@ -81,27 +84,20 @@ class Graphics2d {
 
     ctx.lineWidth = 1;
     ctx.strokeStyle = dots;
-    for (
-      let i = this.xmin;
-      i <= this.xmax;
-      i += (-this.xmin + this.xmax) / this.W
-    )
-      for (
-        let j = this.ymin;
-        j <= this.ymax;
-        j += (-this.ymin + this.ymax) / this.H
-      ) {
-        ctx.beginPath();
-        if (this.values[[i, j]] < 0) {
-          ctx.fillStyle = "rgba(0, 0, 255, 0.2)";
-        } else if (this.values[[i, j]] > 0) {
-          ctx.fillStyle = "rgba(255, 0, 0, 0.2)";
-        } else if (this.values[[i, j]] == 0)
-          ctx.fillStyle = "rgba(255, 255, 255, 0.2)";
-        ctx.arc(zerox + i * stepx, zeroy - j * stepy, 1, 0, 360);
-        ctx.fill();
-        ctx.closePath();
-      }
+    console.log(this.fvalues.length, this.dots.length);
+    for (let i = 0; i < this.W * this.H; ++i) {
+      ctx.beginPath();
+      if (this.fvalues[i] < 0) {
+        ctx.fillStyle = "rgba(0, 0, 255, 0.2)";
+      } else if (this.fvalues[i] > 0) {
+        ctx.fillStyle = "rgba(255, 0, 0, 0.2)";
+      } else if (this.fvalues[i] == 0)
+        ctx.fillStyle = "rgba(255, 255, 255, 0.2)";
+      
+      ctx.arc(zerox + this.dots[i][0] * stepx, zeroy - this.dots[i][1] * stepy, 1, 0, 360);
+      ctx.fill();
+      ctx.closePath();
+    }
     ctx.font = "25px Consolas";
     ctx.textBaseline = "ideographic";
     ctx.fillStyle = "black";

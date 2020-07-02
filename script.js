@@ -20,17 +20,18 @@ class Graphics1d {
     this.ev = 0;
   }
   evaluate() {
-    this.values = new Map();
-
+    let count = 0;
+    this.fvalues = new Float64Array(this.H * this.W);
+    this.dots = new Array (this.H * this.W);
     for (
       let i = this.xmin;
       i <= this.xmax;
       i += (-this.xmin + this.xmax) / this.W
     ) {
-      this.values[i] = this.f(i);
+      this.dots[count] = i;
+      this.fvalues[count++] = this.f(i);
     }
     this.ev = 1;
-    return this.values;
   }
   draw(
     dots = "red",
@@ -95,27 +96,27 @@ class Graphics1d {
     ctx.strokeStyle = dots;
     ctx.moveTo(zerox + this.xmin * stepx, zeroy - this.f(this.xmin) * stepy);
     for (
-      let i = this.xmin;
-      i <= this.xmax;
-      i += (-this.xmin + this.xmax) / this.W
+      let i = 0;
+      i <= this.H * this.W;
+      i ++
     ) {
-      if (i != this.xmin) {
-        let cur = this.values[i];
-        let prev = this.values[i - (-this.xmin + this.xmax) / this.W];
+      if (this.dots[i] != this.xmin) {
+        let cur = this.fvalues[i];
+        let prev = this.fvalues[i - 1];
         if (cur * prev < 0 && Math.abs(cur - prev) > this.ymax - this.ymin) {
           ctx.stroke();
           ctx.closePath();
           ctx.beginPath();
           ctx.fillStyle = gaps;
           ctx.arc(
-            zerox + i * stepx,
+            zerox + this.dots[i] * stepx,
             zeroy - stepy * this.ymax,
             stepx / 10,
             0,
             180
           );
           ctx.arc(
-            zerox + i * stepx,
+            zerox + this.dots[i] * stepx,
             zeroy - stepy * this.ymin,
             stepx / 10,
             0,
@@ -124,9 +125,9 @@ class Graphics1d {
           ctx.fill();
           ctx.closePath();
           ctx.beginPath();
-        } else ctx.lineTo(zerox + i * stepx, zeroy - this.values[i] * stepy);
+        } else ctx.lineTo(zerox + this.dots[i] * stepx, zeroy - this.fvalues[i] * stepy);
       } else {
-        ctx.lineTo(zerox + i * stepx, zeroy - this.values[i] * stepy);
+        ctx.lineTo(zerox + this.dots[i] * stepx, zeroy - this.fvalues[i] * stepy);
       }
     }
     ctx.stroke();
