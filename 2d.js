@@ -114,18 +114,6 @@ class Graphics2d {
     );
     ctx.fillText(mn, zerox + this.xmin * stepx, zeroy + this.ymax * stepy);
   }
-
-  autodraw(
-    dots = "red",
-    axis = "green",
-    zeros = "indigo",
-    gaps = "magenta",
-    bg = "gray"
-  ) {
-    this.ymin = this.f(this.xmin);
-    this.ymax = this.f(this.xmax);
-    this.draw(dots, axis, zeros, gaps, bg);
-  }
 }
 function replaceSpecialSequence(str) {
   str = str.split("cos").join("Math.cos");
