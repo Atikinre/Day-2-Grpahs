@@ -103,7 +103,8 @@ class Graphics1d {
       if (this.dots[i] != this.xmin) {
         let cur = this.fvalues[i];
         let prev = this.fvalues[i - 1];
-        if (cur * prev < 0 && Math.abs(cur - prev) > this.ymax - this.ymin) {
+        if (cur * prev < 0 ) {
+          if(Math.abs(cur - prev) > this.ymax - this.ymin){
           ctx.stroke();
           ctx.closePath();
           ctx.beginPath();
@@ -125,10 +126,21 @@ class Graphics1d {
           ctx.fill();
           ctx.closePath();
           ctx.beginPath();
+          }
+          else {
+            ctx.stroke();
+            ctx.closePath();
+            ctx.beginPath();
+            ctx.fillStyle = zeros;
+            ctx.arc(zerox + this.dots[i] * stepx, zeroy, stepx / 10, 0, 180);
+            ctx.fill();
+            ctx.closePath();
+            ctx.beginPath();
+            ctx.moveTo(zerox + this.dots[i-1] * stepx, zeroy - this.fvalues[i-1] * stepy);
+            ctx.lineTo(zerox + this.dots[i] * stepx, zeroy - this.fvalues[i] * stepy);
+          }
         } else ctx.lineTo(zerox + this.dots[i] * stepx, zeroy - this.fvalues[i] * stepy);
-      } else {
-        ctx.lineTo(zerox + this.dots[i] * stepx, zeroy - this.fvalues[i] * stepy);
-      }
+      } 
     }
     ctx.stroke();
     ctx.closePath();
