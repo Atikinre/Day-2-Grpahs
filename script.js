@@ -53,7 +53,7 @@ class Graphics1d {
     let stepx = this.W / (-this.xmin + this.xmax),
       stepy = this.H / (-this.ymin + this.ymax),
       zerox = -this.xmin * stepx,
-      zeroy = Math.abs(this.ymax) * stepy;
+      zeroy = this.ymax * stepy;
     ctx.fillStyle = bg;
     ctx.fillRect(0, 0, ng.W, ng.H);
     ctx.beginPath();
@@ -212,7 +212,7 @@ function replaceSpecialSequence(str) {
 var sqx = 1,
   sqy = 1;
 var ng = new Graphics1d();
-ng.autodraw();
+ng.draw();
 function yes() {
   var xmin = parseFloat(document.getElementById("xmin").value),
     xmax = parseFloat(document.getElementById("xmax").value),

@@ -52,8 +52,8 @@ class Graphics2d {
     if (this.ev == 0) this.evaluate();
     let stepx = this.W / (-this.xmin + this.xmax),
       stepy = this.H / (-this.ymin + this.ymax),
-      zerox = Math.abs(this.xmin) * stepx,
-      zeroy = Math.abs(this.ymin) * stepy;
+      zerox = -this.xmin * stepx,
+      zeroy = this.ymax * stepy;
     ctx.fillStyle = bg;
     ctx.fillRect(0, 0, nd.W, nd.H);
     ctx.beginPath();
