@@ -111,9 +111,9 @@ class Graphics2d {
     ctx.fillText(
       mx,
       zerox + this.xmax * stepx - (25 * mx.length) / 1.8,
-      zeroy + this.ymin * stepy + 25
+      zeroy - this.ymax * stepy + 25
     );
-    ctx.fillText(mn, zerox + this.xmin * stepx, zeroy + this.ymax * stepy);
+    ctx.fillText(mn, zerox + this.xmin * stepx, zeroy - this.ymin * stepy);
   }
 }
 function replaceSpecialSequence(str) {
