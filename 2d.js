@@ -89,10 +89,7 @@ class Graphics2d {
       ctx.beginPath();
       if (this.fvalues[i] < 0) {
         ctx.fillStyle = "rgba(0, 0, 255, 0.2)";
-      } else if (this.fvalues[i] > 0) {
-        ctx.fillStyle = "rgba(255, 0, 0, 0.2)";
-      } else if (this.fvalues[i] == 0) ctx.fillStyle = "rgba(255, 255, 255, 1)";
-
+      } else if (this.fvalues[i] > 0) ctx.fillStyle = "rgba(255, 0, 0, 0.2)";
       ctx.arc(
         zerox + this.dots[i][0] * stepx,
         zeroy - this.dots[i][1] * stepy,
