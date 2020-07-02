@@ -22,7 +22,7 @@ class Graphics1d {
   evaluate() {
     let count = 0;
     this.fvalues = new Float64Array(this.H * this.W);
-    this.dots = new Array (this.H * this.W);
+    this.dots = new Array(this.H * this.W);
     for (
       let i = this.xmin;
       i <= this.xmax;
@@ -95,39 +95,34 @@ class Graphics1d {
     ctx.lineWidth = 1;
     ctx.strokeStyle = dots;
     ctx.moveTo(zerox + this.xmin * stepx, zeroy - this.f(this.xmin) * stepy);
-    for (
-      let i = 0;
-      i <= this.H * this.W;
-      i ++
-    ) {
+    for (let i = 0; i <= this.H * this.W; i++) {
       if (this.dots[i] != this.xmin) {
         let cur = this.fvalues[i];
         let prev = this.fvalues[i - 1];
-        if (cur * prev < 0 ) {
-          if(Math.abs(cur - prev) > this.ymax - this.ymin){
-          ctx.stroke();
-          ctx.closePath();
-          ctx.beginPath();
-          ctx.fillStyle = gaps;
-          ctx.arc(
-            zerox + this.dots[i] * stepx,
-            zeroy - stepy * this.ymax,
-            stepx / 10,
-            0,
-            180
-          );
-          ctx.arc(
-            zerox + this.dots[i] * stepx,
-            zeroy - stepy * this.ymin,
-            stepx / 10,
-            0,
-            180
-          );
-          ctx.fill();
-          ctx.closePath();
-          ctx.beginPath();
-          }
-          else {
+        if (cur * prev <= 0) {
+          if (Math.abs(cur - prev) > this.ymax - this.ymin) {
+            ctx.stroke();
+            ctx.closePath();
+            ctx.beginPath();
+            ctx.fillStyle = gaps;
+            ctx.arc(
+              zerox + this.dots[i] * stepx,
+              zeroy - stepy * this.ymax,
+              stepx / 10,
+              0,
+              180
+            );
+            ctx.arc(
+              zerox + this.dots[i] * stepx,
+              zeroy - stepy * this.ymin,
+              stepx / 10,
+              0,
+              180
+            );
+            ctx.fill();
+            ctx.closePath();
+            ctx.beginPath();
+          } else {
             ctx.stroke();
             ctx.closePath();
             ctx.beginPath();
@@ -136,11 +131,21 @@ class Graphics1d {
             ctx.fill();
             ctx.closePath();
             ctx.beginPath();
-            ctx.moveTo(zerox + this.dots[i-1] * stepx, zeroy - this.fvalues[i-1] * stepy);
-            ctx.lineTo(zerox + this.dots[i] * stepx, zeroy - this.fvalues[i] * stepy);
+            ctx.moveTo(
+              zerox + this.dots[i - 1] * stepx,
+              zeroy - this.fvalues[i - 1] * stepy
+            );
+            ctx.lineTo(
+              zerox + this.dots[i] * stepx,
+              zeroy - this.fvalues[i] * stepy
+            );
           }
-        } else ctx.lineTo(zerox + this.dots[i] * stepx, zeroy - this.fvalues[i] * stepy);
-      } 
+        } else
+          ctx.lineTo(
+            zerox + this.dots[i] * stepx,
+            zeroy - this.fvalues[i] * stepy
+          );
+      }
     }
     ctx.stroke();
     ctx.closePath();

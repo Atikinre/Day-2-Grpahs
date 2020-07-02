@@ -21,7 +21,7 @@ class Graphics2d {
   }
   evaluate() {
     this.fvalues = new Float64Array(this.H * this.W);
-    this.dots = new Array (this.H * this.W);
+    this.dots = new Array(this.H * this.W);
     let count = 0;
     for (
       let i = this.xmin;
@@ -91,10 +91,15 @@ class Graphics2d {
         ctx.fillStyle = "rgba(0, 0, 255, 0.2)";
       } else if (this.fvalues[i] > 0) {
         ctx.fillStyle = "rgba(255, 0, 0, 0.2)";
-      } else if (this.fvalues[i] == 0)
-        ctx.fillStyle = "rgba(255, 255, 255, 0.2)";
-      
-      ctx.arc(zerox + this.dots[i][0] * stepx, zeroy - this.dots[i][1] * stepy, 1, 0, 360);
+      } else if (this.fvalues[i] == 0) ctx.fillStyle = "rgba(255, 255, 255, 1)";
+
+      ctx.arc(
+        zerox + this.dots[i][0] * stepx,
+        zeroy - this.dots[i][1] * stepy,
+        1,
+        0,
+        360
+      );
       ctx.fill();
       ctx.closePath();
     }
